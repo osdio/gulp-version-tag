@@ -1,37 +1,41 @@
 {
-  "name": "gulp-version-tag",
-  "version": "0.0.1",
-  "description": "A plugin for Gulp",
-  "keywords": [
-    "gulpplugin"
-  ],
-  "author": {
-    "name": "soliury",
-    "email": "hi@lingyong.me",
-    "url": "https://github.com/soliury"
-  },
-  "repository": "soliury/gulp-version-tag",
-  "scripts": {
-    "test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
-  },
-  "dependencies": {
-    "through2": "*",
-    "gulp-util": "~2.2.0"
-  },
-  "devDependencies": {
-    "coffee-script": "^1.8.0",
-    "coveralls": "*",
-    "event-stream": "*",
-    "gulp": "^3.8.10",
-    "istanbul": "*",
-    "mocha": "*",
-    "mocha-lcov-reporter": "*",
-    "should": "~2.1.0"
-  },
-  "engines": {
-    "node": ">=0.8.0",
-    "npm": ">=1.2.10"
-  },
-  "license": "MIT"
+	"name": "gulp-version-tag",
+	"version": "0.0.1",
+	"description": "A plugin for Gulp",
+	"keywords": [
+		"gulpplugin",
+		"gulp",
+		"version",
+		"tag",
+		"build"
+	],
+	"author": {
+		"name": "soliury",
+		"email": "hi@lingyong.me",
+		"url": "https://github.com/soliury"
+	},
+	"repository": "soliury/gulp-version-tag",
+	"scripts": {
+		"test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
+		"coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+	},
+	"dependencies": {
+		"through2": "*",
+		"gulp-util": "~2.2.0"
+	},
+	"devDependencies": {
+		"coffee-script": "^1.8.0",
+		"coveralls": "*",
+		"event-stream": "*",
+		"gulp": "^3.8.10",
+		"istanbul": "*",
+		"mocha": "*",
+		"mocha-lcov-reporter": "*",
+		"should": "~2.1.0"
+	},
+	"engines": {
+		"node": ">=0.8.0",
+		"npm": ">=1.2.10"
+	},
+	"license": "MIT"
 }
