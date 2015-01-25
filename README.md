@@ -107,14 +107,16 @@ and file name will change to `hello-v0.0.1.txt`.
 #### options.beforeText
 
 Type: `String`
-Default: '-v'
+
+Default: `'-v'`
 
 The text to add before version num.
 
 #### options.afterText
 
 Type: `String`
-Default: ''
+
+Default: `''`
 
 The text to add after version num.
 
