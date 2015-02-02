@@ -3,3 +3,5 @@ node_modules/
 temp/
 coverage
 .idea
+example/dest
+npm-debug.log

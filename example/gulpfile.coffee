@@ -5,7 +5,7 @@ versionTag = require '../index'
 gulp.task 'default', ->
 	gulp.src '../test/**/**.txt'
 	.pipe versionTag __dirname, '../test/package.json',
-		global: true
+		reuse: true
 		beforeText: '---v'
 		afterText: '---'
 	.pipe gulp.dest './dest'
