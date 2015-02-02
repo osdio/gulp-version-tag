@@ -71,6 +71,41 @@ describe("gulp-version-tag", function () {
 			}
 		});
 
+		it('should throw err when packageRelativePath is undefined', function (done) {
+			setVersion('ad.0.1');
+			try {
+				stream = gulpVersionTag(__dirname);
+				stream.on("error", function (err) {
+					done();
+				});
+				stream.write(srcFile);
+				stream.end();
+			}
+			catch (err) {
+				should.exist(err);
+				err.message.should.equal('Package.json path is empty');
+				done();
+			}
+		});
+
+		it('should throw err when version is not exist', function (done) {
+			setVersion('ad.0.1');
+			try {
+				stream = gulpVersionTag(__dirname,'./package2.json');
+				stream.on("error", function (err) {
+					done();
+				});
+				stream.write(srcFile);
+				stream.end();
+			}
+			catch (err) {
+				should.exist(err);
+				err.message.should.equal('Version format is wrong');
+				done();
+			}
+		});
+
+
 
 	});
 
@@ -127,6 +162,94 @@ describe("gulp-version-tag", function () {
 			stream.write(srcFile);
 			stream.end();
 		});
+
+		it("should produce expected file when use feature", function (done) {
+
+			var srcFile = new gutil.File({
+				path: "test/fixtures/hello.txt",
+				cwd: "test/",
+				base: "test/fixtures",
+				contents: fs.createReadStream("test/fixtures/hello.txt")
+			});
+
+			var stream = gulpVersionTag(__dirname, './package.json',{
+				type:'feature'
+			});
+
+			stream.on("error", function (err) {
+				done(err);
+			});
+
+			stream.on("data", function (newFile) {
+
+				should.exist(newFile);
+				should.exist(newFile.contents);
+				Path.basename(newFile.path, '.txt').should.equal('hello-v0.1.0');
+				readVersion().should.equal('0.1.0');
+				done();
+
+			});
+
+			stream.write(srcFile);
+			stream.end();
+		});
+
+			it("should produce expected file when use release", function (done) {
+
+			var srcFile = new gutil.File({
+				path: "test/fixtures/hello.txt",
+				cwd: "test/",
+				base: "test/fixtures",
+				contents: fs.createReadStream("test/fixtures/hello.txt")
+			});
+
+			var stream = gulpVersionTag(__dirname, './package.json',{
+				type:'release'
+			});
+
+			stream.on("error", function (err) {
+				done(err);
+			});
+
+			stream.on("data", function (newFile) {
+
+				should.exist(newFile);
+				should.exist(newFile.contents);
+				Path.basename(newFile.path, '.txt').should.equal('hello-v1.0.0');
+				readVersion().should.equal('1.0.0');
+				done();
+
+			});
+
+			stream.write(srcFile);
+			stream.end();
+		});
+
+
+
+
+
+
+		it("should patch version when file is null", function (done) {
+
+			var srcFile = new gutil.File();
+
+			var stream = gulpVersionTag(__dirname, './package.json');
+
+			stream.on("error", function (err) {
+				done(err);
+			});
+
+			stream.on("data", function () {
+				readVersion().should.equal('0.0.2');
+				done();
+			});
+
+			stream.write(srcFile);
+			stream.end();
+		});
+
+
 
 		it("should make sense when set the beforeText or afterText", function (done) {
 

@@ -1,5 +1,4 @@
 var Path = require("path"),
-	fs = require('fs'),
 	through = require("through2"),
 	gutil = require("gulp-util"),
 	VersionTag = require('./util');
@@ -10,12 +9,22 @@ const PLUGIN_NAME = 'gulp-version-tag';
 module.exports = function (dirname, packageRelativePath, options) {
 	"use strict";
 	var flag = 0,
-		versionTag;
+		versionTag,
+		type;
 
 	options = options || {};
 	options.beforeText = options.beforeText || '-v';
 	options.afterText = options.afterText || '';
-	options.reuse = options.reuse || false;
+
+	if (options.type != 'feature' && options.type != 'release') {
+		options.type = 'patch';
+	}
+	type = options.type;
+
+
+	if (!packageRelativePath) {
+		throw new gutil.PluginError(PLUGIN_NAME, "Package.json path is empty");
+	}
 
 	var errorHandle = function (err) {
 		throw new gutil.PluginError(PLUGIN_NAME, err);
@@ -23,19 +32,14 @@ module.exports = function (dirname, packageRelativePath, options) {
 	versionTag = new VersionTag(dirname, packageRelativePath, errorHandle);
 
 
-	if (!packageRelativePath) {
-		throw new gutil.PluginError(PLUGIN_NAME, "Package.json path is empty");
-	}
-
-	if (versionTag.version == null) {
-		throw new gutil.PluginError(PLUGIN_NAME, "Version is null");
-	}
-
-
 	function gulpVersionTag(file, enc, callback) {
 		if (file.isNull()) {
+			if (flag == 0) {
+				versionTag[type]();
+				flag++;
+			}
 			this.push(file);
-			versionTag.save();
+
 			return callback();
 		}
 
@@ -61,7 +65,7 @@ module.exports = function (dirname, packageRelativePath, options) {
 			}
 			else {
 				if (flag == 0) {
-					versionTag.patch();
+					versionTag[type]();
 					flag++;
 				}
 				global.versionTag = versionTag.version;
