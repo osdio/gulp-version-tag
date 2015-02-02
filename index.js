@@ -9,9 +9,7 @@ const PLUGIN_NAME = 'gulp-version-tag';
 
 module.exports = function (dirname, packageRelativePath, options) {
 	"use strict";
-	var packagejson = {},
-		version,
-		packageAbsolutPath,
+	var flag = 0,
 		versionTag;
 
 	options = options || {};
@@ -62,7 +60,10 @@ module.exports = function (dirname, packageRelativePath, options) {
 				file.path = Path.join(dirname, basename + extname);
 			}
 			else {
-				versionTag.patch();
+				if (flag == 0) {
+					versionTag.patch();
+					flag++;
+				}
 				global.versionTag = versionTag.version;
 				basename += options.beforeText + versionTag.version + options.afterText;
 				file.path = Path.join(dirname, basename + extname);

@@ -128,6 +128,105 @@ describe("gulp-version-tag", function () {
 			stream.end();
 		});
 
+		it("should make sense when set the beforeText or afterText", function (done) {
+
+			var srcFile = new gutil.File({
+				path: "test/fixtures/hello.txt",
+				cwd: "test/",
+				base: "test/fixtures",
+				contents: fs.createReadStream("test/fixtures/hello.txt")
+			});
+
+			var stream = gulpVersionTag(__dirname, './package.json', {
+				beforeText: '--',
+				afterText: '11'
+			});
+
+			stream.on("error", function (err) {
+				done(err);
+			});
+
+			stream.on("data", function (newFile) {
+
+				should.exist(newFile);
+				should.exist(newFile.contents);
+				Path.basename(newFile.path, '.txt').should.equal('hello--0.0.211');
+				readVersion().should.equal('0.0.2');
+				done();
+
+			});
+
+			stream.write(srcFile);
+			stream.end();
+		});
+
+		it("should be ok when set reuse to true", function (done) {
+
+			var srcFile, srcFile2, count = 0;
+			srcFile = new gutil.File({
+				path: "test/fixtures/hello.txt",
+				cwd: "test/",
+				base: "test/fixtures",
+				contents: fs.createReadStream("test/fixtures/hello.txt")
+			});
+
+			srcFile2 = new gutil.File({
+				path: "test/fixtures/hello2.txt",
+				cwd: "test/",
+				base: "test/fixtures",
+				contents: fs.createReadStream("test/fixtures/hello2.txt")
+			});
+
+
+			var stream = gulpVersionTag(__dirname, './package.json');
+			var stream2 = gulpVersionTag(__dirname, './package.json', {
+				reuse: true
+			});
+
+
+			stream.on("error", function (err) {
+				done(err);
+			});
+
+			stream2.on("error", function (err) {
+				done(err);
+			});
+
+
+			stream.on("data", function (newFile) {
+
+				should.exist(newFile);
+				should.exist(newFile.contents);
+				Path.basename(newFile.path, '.txt').should.equal('hello-v0.0.2');
+				readVersion().should.equal('0.0.2');
+				count++;
+				if (count == 2) {
+					done();
+				}
+			});
+
+			stream2.on("data", function (newFile) {
+
+				should.exist(newFile);
+				should.exist(newFile.contents);
+				Path.basename(newFile.path, '.txt').should.equal('hello2-v0.0.2');
+				readVersion().should.equal('0.0.2');
+				count++;
+				if (count == 2) {
+					done();
+				}
+
+			});
+
+
+			stream.write(srcFile);
+			stream2.write(srcFile2);
+
+			stream.end();
+			stream2.end();
+		});
+
+
 	});
 
 
