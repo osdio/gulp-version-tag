@@ -16,6 +16,8 @@ function VersionTag(dirname, packagejsonRelativePath, options, errorHandle) {
 	this.errorHandle = errorHandle || new Function();
 	this.versionNums = [];
 	this.packagejson = {};
+	this.autoSave = options.autoSave;
+	this.autoTagVersion = options.autoTagVersion;
 	this.read();
 }
 

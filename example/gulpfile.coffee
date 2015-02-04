@@ -8,7 +8,7 @@ gulp.task 'default', ->
 		reuse: false
 		beforeText: '-v'
 		afterText: ''
-		autoSave:false
+#		autoSave:false
 #		autoTagVersion: false
 	.pipe gulp.dest './dest'
 
