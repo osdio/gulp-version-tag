@@ -11,7 +11,7 @@ function checkVersion(version) {
 	return true
 }
 
-function VersionTag(dirname, packagejsonRelativePath, errorHandle) {
+function VersionTag(dirname, packagejsonRelativePath, options, errorHandle) {
 	this.path = Path.resolve(dirname, packagejsonRelativePath);
 	this.errorHandle = errorHandle || new Function();
 	this.versionNums = [];
@@ -51,21 +51,24 @@ VersionTag.prototype.save = function () {
 VersionTag.prototype.patch = function () {
 	this.versionNums[2] += 1;
 	this.version = this.versionNums.join('.');
-	this.save()
+	if (this.autoSave)
+		this.save();
 };
 
 VersionTag.prototype.feature = function () {
 	this.versionNums[1] += 1;
 	this.versionNums[2] = 0;
 	this.version = this.versionNums.join('.');
-	this.save();
+	if (this.autoSave)
+		this.save();
 };
 
 VersionTag.prototype.release = function () {
 	this.versionNums[1] = this.versionNums[2] = 0;
 	this.versionNums[0] += 1;
 	this.version = this.versionNums.join('.');
-	this.save();
+	if (this.autoSave)
+		this.save();
 };
 
 module.exports = VersionTag;

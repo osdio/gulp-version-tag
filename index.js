@@ -15,6 +15,11 @@ module.exports = function (dirname, packageRelativePath, options) {
 	options = options || {};
 	options.beforeText = options.beforeText || '-v';
 	options.afterText = options.afterText || '';
+	if (options.autoTagVersion === undefined)
+		options.autoTagVersion = true;
+	if (options.autoSave === undefined)
+		options.autoSave = true;
+	console.log(options);
 
 	if (options.type != 'feature' && options.type != 'release') {
 		options.type = 'patch';
@@ -29,7 +34,7 @@ module.exports = function (dirname, packageRelativePath, options) {
 	var errorHandle = function (err) {
 		throw new gutil.PluginError(PLUGIN_NAME, err);
 	};
-	versionTag = new VersionTag(dirname, packageRelativePath, errorHandle);
+	versionTag = new VersionTag(dirname, packageRelativePath, options, errorHandle);
 
 
 	function gulpVersionTag(file, enc, callback) {
@@ -64,7 +69,7 @@ module.exports = function (dirname, packageRelativePath, options) {
 				file.path = Path.join(dirname, basename + extname);
 			}
 			else {
-				if (flag == 0) {
+				if (flag == 0 && options.autoTagVersion) {
 					versionTag[type]();
 					flag++;
 				}

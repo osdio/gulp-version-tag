@@ -6,8 +6,10 @@ gulp.task 'default', ->
 	gulp.src '../test/**/**.txt'
 	.pipe versionTag __dirname, '../test/package.json',
 		reuse: false
-		beforeText: '---v'
-		afterText: '---'
+		beforeText: '-v'
+		afterText: ''
+		autoSave:false
+#		autoTagVersion: false
 	.pipe gulp.dest './dest'
 
 setTimeout ()->
