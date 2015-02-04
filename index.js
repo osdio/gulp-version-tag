@@ -58,7 +58,6 @@ module.exports = function (dirname, packageRelativePath, options) {
 			setVersionTag(file);
 			this.push(file);
 		}
-		console.log(options);
 		function setVersionTag(file) {
 			var extname = Path.extname(file.path);
 			var basename = Path.basename(file.path, extname);
