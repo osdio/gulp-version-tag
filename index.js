@@ -19,7 +19,6 @@ module.exports = function (dirname, packageRelativePath, options) {
 		options.autoTagVersion = true;
 	if (options.autoSave === undefined)
 		options.autoSave = true;
-	console.log(options);
 
 	if (options.type != 'feature' && options.type != 'release') {
 		options.type = 'patch';
