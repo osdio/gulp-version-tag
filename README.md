@@ -70,7 +70,7 @@ Type: `Object`
 
 Required: `false`
 
-##### options.global
+##### options.reuse
 
 Type: `Bool`
 
@@ -78,31 +78,41 @@ Required: `false`
 
 Default: `true`
 
-If you set this value to `true`, when run `gulp-version-tag`, it will set the `global.versionTag` to the version of package.son now. So that you can use this version value to do another thing.
+If you set this value to `true`, when run `gulp-version-tag`, if `global.versionTag` have value, it will use the value of it as version. And once you run a task, it will set `global.versionTag` to the version read from `package.json`.
+
+If you set this value to `false`, it won't check the value of `global.versionTag` every time you run a gulp task.
 
 For example:
 
 ```
-gulp = require 'gulp'
-versionTag = require '../index'
-
-
-gulp.task 'default', ->
-	gulp.src '../test/**/**.txt'
+gulp.task 'task1', ->
+	gulp.src '../test/expected/**.txt'
 	.pipe versionTag __dirname, '../test/package.json',
-		global: true
+#		reuse: false
+		beforeText: '-v'
+		afterText: ''
+#		autoSave:false
+#		autoTagVersion: false
+	.pipe gulp.dest './dest'
+
+gulp.task 'task2', ->
+	gulp.src '../test/fixtures/**.txt'
+	.pipe versionTag __dirname, '../test/package.json',
+#		reuse: false
+		beforeText: '-v'
+		afterText: ''
+#		autoSave:false
+#		autoTagVersion: false
 	.pipe gulp.dest './dest'
 
 
-setTimeout ()->
-	console.log global.versionTag
-, 2000
-#    you will get the version Tag
+gulp.task 'default', ['task1', 'task2']
 
 ```
 
-A file(for example : hello.txt), if your current version is `0.0.0`, after running gulp-version-tag, it will change to `0.0.1`, 
-and file name will change to `hello-v0.0.1.txt`.
+When you running many tasks, and you want to use the same version, you should not set reuse to `false`.Just like the example above, `task1` and `task2` can use the same version, it only auto gain version once, and save once. 
+
+For more example, just see my another project: [ngFast](https://github.com/soliury/ngFast).
 
 #### options.beforeText
 
@@ -131,6 +141,24 @@ gulp.task 'default', ->
 		afterText: '---'
 	.pipe gulp.dest './dest'
 ```
+
+#### options.autoSave
+
+Type: 'Bool'
+
+Default: `true`
+
+If the value is `true`, When running `gulp-version-tag`, it will auto save the version change to `package.json`.
+
+#### options.autoTagVersion
+
+Type: 'Bool'
+
+Default: `true`
+
+If the value is `true`, it will auto change the version number, if the version in your package.json is `0.0.1`, a file `file01` will be changed to `file01-v0.0.02` after running.
+
+For more example, just [see](https://github.com/soliury/gulp-version-tag/blob/master/example/gulpfile.coffee).
 
 ### Another use
 
