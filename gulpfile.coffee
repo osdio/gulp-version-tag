@@ -19,7 +19,11 @@ gulp.task 'addAndCommit', ->
 
 gulp.task 'tag', ['patch', 'addAndCommit'], ->
 	git.tag 'v' + version.version, versionInfo, (err)->
-		console.log err
+		if err
+			console.log err
+		else
+			console.log "Taged v#{version.version}"
+
 
 
 
