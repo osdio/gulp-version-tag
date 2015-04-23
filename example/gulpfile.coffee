@@ -1,6 +1,9 @@
 gulp = require 'gulp'
 versionTag = require '../index'
+Version = require '../util'
 
+version = new Version __dirname, '../test/package.json',
+	autoSave: true
 
 gulp.task 'task1', ->
 	gulp.src '../test/expected/**.txt'
@@ -9,7 +12,7 @@ gulp.task 'task1', ->
 		beforeText: '-v'
 		afterText: ''
 #		autoSave:false
-#		autoTagVersion: false
+		autoTagVersion: false
 	.pipe gulp.dest './dest'
 
 gulp.task 'task2', ->
@@ -19,7 +22,7 @@ gulp.task 'task2', ->
 		beforeText: '-v'
 		afterText: ''
 #		autoSave:false
-#		autoTagVersion: false
+		autoTagVersion: false
 	.pipe gulp.dest './dest'
 
 
@@ -29,3 +32,16 @@ gulp.task 'default', ['task1', 'task2']
 setTimeout ()->
 	console.log global.versionTag
 , 100
+
+
+gulp.task 'patch', ->
+	version.patch()
+	console.log "version changed to #{version.version}"
+
+gulp.task 'feature', ->
+	version.feature()
+	console.log "version changed to #{version.version}"
+
+gulp.task 'release', ->
+	version.release()
+	console.log "version changed to #{version.version}"

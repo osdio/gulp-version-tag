@@ -89,8 +89,8 @@ gulp.task 'task1', ->
 	gulp.src '../test/expected/**.txt'
 	.pipe versionTag __dirname, '../test/package.json',
 #		reuse: false
-		beforeText: '-v'
-		afterText: ''
+		prefix: '-v'
+		suffix: ''
 #		autoSave:false
 #		autoTagVersion: false
 	.pipe gulp.dest './dest'
@@ -99,8 +99,8 @@ gulp.task 'task2', ->
 	gulp.src '../test/fixtures/**.txt'
 	.pipe versionTag __dirname, '../test/package.json',
 #		reuse: false
-		beforeText: '-v'
-		afterText: ''
+		prefix: '-v'
+		suffix: ''
 #		autoSave:false
 #		autoTagVersion: false
 	.pipe gulp.dest './dest'
@@ -114,7 +114,7 @@ When you running many tasks, and you want to use the same version, you should no
 
 For more example, just see my another project: [ngFast](https://github.com/soliury/ngFast).
 
-#### options.beforeText
+#### options.prefix
 
 Type: `String`
 
@@ -122,7 +122,7 @@ Default: `'-v'`
 
 The text to add before version num.
 
-#### options.afterText
+#### options.suffix
 
 Type: `String`
 
@@ -137,14 +137,14 @@ gulp.task 'default', ->
 	gulp.src '../test/**/**.txt'
 	.pipe versionTag __dirname, '../test/package.json',
 		global: true
-		beforeText: '---v'
-		afterText: '---'
+		prefix: '---v'
+		suffix: '---'
 	.pipe gulp.dest './dest'
 ```
 
 #### options.autoSave
 
-Type: 'Bool'
+Type: `Bool`
 
 Default: `true`
 
@@ -152,7 +152,7 @@ If the value is `true`, When running `gulp-version-tag`, it will auto save the v
 
 #### options.autoTagVersion
 
-Type: 'Bool'
+Type: `Bool`
 
 Default: `true`
 
@@ -160,9 +160,45 @@ If the value is `true`, it will auto change the version number, if the version i
 
 For more example, just [see](https://github.com/soliury/gulp-version-tag/blob/master/example/gulpfile.coffee).
 
+#### options.type
+
+Type: `String`
+
+Default: `patch`
+
+**patch**: v0.0.1    -->    v0.0.2
+
+**feature**: v0.0.1    -->    v0.1.1
+
+**release**: v0.0.1    -->    v1.0.1
+
 ### Another use
 
+```
+gulp = require 'gulp'
+versionTag = require '../index'
+Version = require '../util'
 
+
+version = new Version __dirname, '../test/package.json',
+	autoSave: true
+
+
+gulp.task 'patch', ->
+	version.patch()
+	console.log "version changed to #{version.version}"
+
+gulp.task 'feature', ->
+	version.feature()
+	console.log "version changed to #{version.version}"
+
+gulp.task 'release', ->
+	version.release()
+	console.log "version changed to #{version.version}"
+
+```
+
+This can ease to update the package version.
 
 
 

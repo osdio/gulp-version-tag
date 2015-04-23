@@ -13,8 +13,8 @@ module.exports = function (dirname, packageRelativePath, options) {
 		type;
 
 	options = options || {};
-	options.beforeText = options.beforeText || '-v';
-	options.afterText = options.afterText || '';
+	options.prefix = options.prefix || '_v';
+	options.suffix = options.suffix || '';
 	if (options.autoTagVersion === undefined)
 		options.autoTagVersion = true;
 	if (options.autoSave === undefined)
@@ -63,7 +63,7 @@ module.exports = function (dirname, packageRelativePath, options) {
 			var basename = Path.basename(file.path, extname);
 			var dirname = Path.dirname(file.path);
 			if (options.reuse && global.versionTag) {
-				basename += options.beforeText + global.versionTag + options.afterText;
+				basename += options.prefix + global.versionTag + options.suffix;
 				file.path = Path.join(dirname, basename + extname);
 			}
 			else {
@@ -72,7 +72,7 @@ module.exports = function (dirname, packageRelativePath, options) {
 					flag++;
 				}
 				global.versionTag = versionTag.version;
-				basename += options.beforeText + versionTag.version + options.afterText;
+				basename += options.prefix + versionTag.version + options.suffix;
 				file.path = Path.join(dirname, basename + extname);
 			}
 		}
