@@ -198,7 +198,8 @@ gulp.task 'release', ->
 
 ```
 
-This can ease to update the package version.
+This can ease to update the package version. More details focus on [gulpfile](https://github.com/soliury/gulp-version-tag/blob/master/gulpfile.coffee)
+
 
 
 
